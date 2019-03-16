@@ -1,5 +1,0 @@
-# Copy this file to config.yaml and make sure to not commit it with secret parameters.
-# Since config.yaml is added to .gitignore, this shouldn't happen.
-
-username: swentametron
-password:
