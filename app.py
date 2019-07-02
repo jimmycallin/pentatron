@@ -1,7 +1,7 @@
 from resources import nst
 import lexicon
 import pandas as pd
-
+from random import random
 
 def load_headlines():
     df = pd.read_json("./resources/headlines.json", lines=True)
@@ -14,15 +14,15 @@ def is_iambic_pentametre(*args):
 
 
 def headlines_rhyme(lex, headlines):
-    for title1 in headlines:
+    for title1 in sorted(headlines, key=lambda k: random()):
         if (
             "UNK" in lexicon.transcribe_sentence(lex, title1)
-            or lexicon.count_syllables(lex, title1) > 8
+            or lexicon.count_syllables(lex, title1) > 10
         ):
             continue
         if not is_iambic_pentametre(lexicon.transcribe_sentence(lex, title1)):
             continue
-        for title2 in headlines:
+        for title2 in sorted(headlines, key=lambda k: random()):
             if title1 == title2:
                 continue
             if (

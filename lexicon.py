@@ -44,7 +44,7 @@ SYLLABLE_SEPARATOR = "$"
 
 def transcribe_word(lex, w):
     try:
-        return lex.ix[w.lower()].trans_1
+        return lex.at[w.lower(), "trans_1"]
     except KeyError:
         return "UNK"
 
