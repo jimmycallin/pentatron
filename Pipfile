@@ -7,6 +7,7 @@ verify_ssl = true
 pylint = "*"
 autopep8 = "*"
 ipython = "*"
+black = "*"
 
 [packages]
 pandas = "*"
@@ -14,3 +15,6 @@ stanfordnlp = "*"
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

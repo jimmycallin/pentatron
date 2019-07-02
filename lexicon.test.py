@@ -1,5 +1,6 @@
 import lexicon
 
+
 def assert_rhymes():
     should_rhyme = [
         ("sorg", "göteborg"),

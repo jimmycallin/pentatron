@@ -1,1 +1,1 @@
-This is the repository for making a Swedish version of the Twitter bot Pentametron.
+Trying to figure out how to detect if stuff rhymes.
