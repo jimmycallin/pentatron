@@ -12,6 +12,7 @@ black = "*"
 [packages]
 pandas = "*"
 stanfordnlp = "*"
+joblib = "*"
 
 [requires]
 python_version = "3.6"
