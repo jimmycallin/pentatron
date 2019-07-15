@@ -89,6 +89,7 @@ def load_lexicon(path):
     Returns NST lexicon as pandas.DataFrame.
     """
     print("Reading NST lexicon from {}".format(path))
+    function_words = ["i", "att", "den", "det", "så", "och", "men", "för", "som", "då", "när", "min", "din", "vår", "han", "hon", "hans", "dess", "nog", "med", "kan", "hur", "var", "när", "vem"]
     missing = pd.DataFrame.from_dict(to_nst_format({
         "på": 'po:',
         "efter": 'Ef$ter',
@@ -146,4 +147,7 @@ def load_lexicon(path):
     )
     df.columns = COLUMNS
     df["orthography"] = df["orthography"].str.lower()
+    for fw in function_words:
+        fw_trans1 = df.loc[df.orthography == fw, "trans_1"]
+        df.loc[df.orthography == fw, "trans_1"] = "?{}".format(fw_trans1)
     return df.append(missing, sort=True).drop_duplicates(subset="orthography").set_index("orthography").sort_index()

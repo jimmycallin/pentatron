@@ -3,9 +3,9 @@ import lexicon
 import pandas as pd
 from random import random
 from joblib import Memory
+from collections import Counter
 
 memory = Memory("/tmp/", verbose=1)
-
 
 @memory.cache
 def load_headlines():
@@ -30,20 +30,16 @@ def is_iambic_pentametre(lex, transcribed_sentence):
         if last_was_stressed is None:
             last_was_stressed = lexicon.is_stressed_syllable(syllable)
             continue
-        if last_was_stressed and lexicon.is_stressed_syllable(syllable):
-            return False
-        if not last_was_stressed and not lexicon.is_stressed_syllable(syllable):
-            return False
-        elif last_was_stressed and not lexicon.is_stressed_syllable(syllable):
+        elif last_was_stressed and (lexicon.is_unstressable(syllable) or not lexicon.is_stressed_syllable(syllable)):
             last_was_stressed = False
             continue
-        elif not last_was_stressed and lexicon.is_stressed_syllable(syllable):
+        elif not last_was_stressed and (lexicon.is_unstressable(syllable) or lexicon.is_stressed_syllable(syllable)):
             last_was_stressed = True
             continue
+        else:
+            return False
     return True
 
-
-from collections import Counter
 
 
 def headlines_rhyme(lex, headlines):
