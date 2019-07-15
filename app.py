@@ -6,6 +6,7 @@ from joblib import Memory
 
 memory = Memory("/tmp/", verbose=1)
 
+
 @memory.cache
 def load_headlines():
     df = pd.read_json("./resources/headlines.json", lines=True)
@@ -22,16 +23,16 @@ def load_headlines():
 
 def is_iambic_pentametre(lex, transcribed_sentence):
     syllables = lexicon.get_syllables(lex, transcribed_sentence)
-    if len(syllables) != 10:
+    if len(syllables) > 12 or len(syllables) < 9:
         return False
     last_was_stressed = None
     for syllable in syllables:
         if last_was_stressed is None:
             last_was_stressed = lexicon.is_stressed_syllable(syllable)
             continue
-        if last_was_stressed and lexicon.is_stressed_syllable(syllable):            
+        if last_was_stressed and lexicon.is_stressed_syllable(syllable):
             return False
-        if not last_was_stressed and not lexicon.is_stressed_syllable(syllable):            
+        if not last_was_stressed and not lexicon.is_stressed_syllable(syllable):
             return False
         elif last_was_stressed and not lexicon.is_stressed_syllable(syllable):
             last_was_stressed = False
@@ -42,20 +43,25 @@ def is_iambic_pentametre(lex, transcribed_sentence):
     return True
 
 
+from collections import Counter
+
+
 def headlines_rhyme(lex, headlines):
+    missing_words = Counter()
     for title1 in sorted(headlines, key=lambda k: random()):
-        if (
-            "UNK" in lexicon.transcribe_sentence(lex, title1)
-        ):
+        transcribed1 = lexicon.transcribe_sentence(lex, title1)
+        if "UNK" in transcribed1:
+            for t, w in zip(lexicon.tokenize(title1), transcribed1.split(" ")):
+                if w == "UNK":
+                    missing_words[t] += 1
             continue
         if not is_iambic_pentametre(lex, title1):
             continue
         for title2 in sorted(headlines, key=lambda k: random()):
             if title1 == title2:
                 continue
-            if (
-                "UNK" in lexicon.transcribe_sentence(lex, title2)
-            ):
+            transcribed2 = lexicon.transcribe_sentence(lex, title2)
+            if "UNK" in transcribed2:
                 continue
             if not is_iambic_pentametre(lex, title2):
                 continue
@@ -64,6 +70,7 @@ def headlines_rhyme(lex, headlines):
                 print(title2.replace("\n", " "))
                 print()
                 break
+    print("MISSING", str(missing_words.most_common(40)))
 
 
 if __name__ == "__main__":

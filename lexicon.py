@@ -39,18 +39,23 @@ CONSONANTS = STOPS + NASALS + FRICATIVES + APPROX
 
 SYLLABLE_SEPARATOR = "$"
 
+
+def tokenize(s):
+    return re.findall(r"[\w\d]+", s.replace("\\n", "").lower())
+
+
 ### TRANSCRIPTION
 
 
 def transcribe_word(lex, w):
     try:
-        return lex.at[w.lower(), "trans_1"]
+        return lex.at[w, "trans_1"]
     except KeyError:
         return "UNK"
 
 
 def transcribe_sentence(lex, s):
-    return " ".join([transcribe_word(lex, w) for w in s.split(" ")])
+    return " ".join([transcribe_word(lex, w) for w in tokenize(s)])
 
 
 ### SYLLABLE
@@ -118,8 +123,8 @@ def is_rhyme(lex, w1, w2):
 
 
 def is_rhyming_sentences(lex, s1, s2):
-    ws1 = s1.split(" ")
-    ws2 = s2.split(" ")
+    ws1 = tokenize(s1)
+    ws2 = tokenize(s2)
     if is_rhyme(lex, ws1[-1], ws2[-1]):
         return True
 

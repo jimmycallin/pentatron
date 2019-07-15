@@ -73,12 +73,70 @@ class _nst_dialect(csv.Dialect):
     lineterminator = "\r\n"
     quoting = csv.QUOTE_NONE
 
+def to_nst_format(transcriptions):
+    nst_format = {}
+    for orthography, transcription in transcriptions.items():
+        arr = [float("NaN")] * 51
+        arr[0] = orthography
+        arr[3] = orthography
+        arr[11] = transcription
+        nst_format[orthography] = arr
+    return nst_format
+    
 @memory.cache
 def load_lexicon(path):
     """
     Returns NST lexicon as pandas.DataFrame.
     """
     print("Reading NST lexicon from {}".format(path))
+    missing = pd.DataFrame.from_dict(to_nst_format({
+        "på": 'po:',
+        "efter": 'Ef$ter',
+        "av": 'A:v',
+        "som": 'sOm',
+        "den": 'dE:n',
+        "det": 'de:t',
+        "2018": '"tvo: "t}:$sen ""A:$t`On',
+        "trump": 'tru0mp',
+        "2019": '"tvo: "t}:$sen ""nI$tOn',
+        "shl": '"Es "ho: "El',
+        "flera": '""fle:$ra',
+        "2017": '"tvo: "t}:$sen ""xu0$tOn',
+        "10": '""ti:$U',
+        "få": '"fo:',
+        "5": '"fEm',
+        "1": '"Et',
+        "zlatan": '""fla:$tan',
+        "bra": '"brA:',
+        "7": '"x}:',
+        "utanför": '""}:$tan$%f2:r',
+        "sd": '"Es "dE',
+        "än": '"E:n',
+        "sveriges": '"svEr$jes',
+        "trumps": 'tru0mp',
+        "bort": '"bOt`',
+        "mer": '"mEr',
+        "löfven": 'l2:$"ve:n',
+        "stort": '"stu:t`',
+        "bakom": '""bA:%kOm',
+        "2": '"tvo:',
+        "6": '"sEks',
+        "hittad": '""hI$tad',
+        "kim": '"kIm',
+        "15": '""fEm$tOn',
+        "9": '""ni:$U',
+        "8": '""O$ta',
+        "20": '""s\'}:$gU',
+        "3": '"tre:',
+        "12": '"tOlv',
+        "topptipset": '"tOp "tIp$set',
+        "mest": '"mEst',
+        "11": '""El$va',
+        "v64": '"ve: sek$stI$U$""fy:$ra',
+        "30": '""trE$tI',
+        "4": '""fy:$ra',
+        "många": '""mON$a'
+    }), orient="index", columns=COLUMNS)
     df = pd.read_csv(
         path,
         encoding="utf-8",
@@ -89,8 +147,3 @@ def load_lexicon(path):
     df.columns = COLUMNS
     df["orthography"] = df["orthography"].str.lower()
     return df.append(missing, sort=True).drop_duplicates(subset="orthography").set_index("orthography").sort_index()
-
-
-missing = pd.DataFrame.from_dict({
-    "på": ["på", "KN", "NaN", "på", "KN", "LEX", "SWE", "NaN", "NaN", "NaN", "NaN", "\"po:", "1", "STD", "SWE", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "spd_se", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "på", "NaN", "NaN", "0000"]
-}, orient="index", columns=COLUMNS)
