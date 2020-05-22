@@ -133,12 +133,21 @@ def is_rhyming_sentences(lex, s1, s2):
 
 ### PROSE
 
-def is_iambic_pentameter(lex, s):
-    syls = get_syllables(lex, s)
-    # 1. get all syllables
-    # 2. map all syllables to stressed/unstressed/both
-    # 3. verify first syllable is unstressed/both
-    # 4. make sure following is stressed/both
-    # 5. and so on
-    # 6. verify number of iambic feet are 5
-    return syls
+def is_iambic_pentametre(lex, transcribed_sentence):
+    syllables = get_syllables(lex, transcribed_sentence)
+    if len(syllables) > 13 or len(syllables) < 6:
+        return False
+    last_was_stressed = None
+    for syllable in syllables:
+        if last_was_stressed is None:
+            last_was_stressed = is_stressed_syllable(syllable)
+            continue
+        elif last_was_stressed and (is_unstressable(syllable) or not is_stressed_syllable(syllable)):
+            last_was_stressed = False
+            continue
+        elif not last_was_stressed and (is_unstressable(syllable) or is_stressed_syllable(syllable)):
+            last_was_stressed = True
+            continue
+        else:
+            return False
+    return True

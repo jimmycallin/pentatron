@@ -83,6 +83,8 @@ def to_nst_format(transcriptions):
         nst_format[orthography] = arr
     return nst_format
     
+# add these [('000', 386), ('v86', 302), ('gw', 291), ('volvo', 278), ('andreas', 263), ('martin', 261), ('18', 246), ('ibrahimovic', 229), ('13', 224), ('16', 222), ('17', 217), ('14', 206), ('avstängd', 200), ('malin', 194), ('bachner', 193), ('rånad', 186), ('brynäs', 185), ('25', 183), ('100', 181), ('19', 180), ('hemnet', 173), ('förd', 172), ('johaug', 169), ('misshandlad', 164), ('40', 160), ('21', 160), ('22', 158), ('häktad', 155), ('enligt', 151), ('facebook', 151), ('zlatans', 151), ('där', 149), ('dance', 145), ('meghan', 141), ('27', 141), ('ronaldo', 139), ('redhawks', 138), ('mourinho', 134), ('detta', 134), ('23', 132)]
+
 @memory.cache
 def load_lexicon(path):
     """
@@ -91,14 +93,14 @@ def load_lexicon(path):
     print("Reading NST lexicon from {}".format(path))
     function_words = ["i", "att", "den", "det", "så", "och", "men", "för", "som", "då", "när", "min", "din", "vår", "han", "hon", "hans", "dess", "nog", "med", "kan", "hur", "var", "när", "vem"]
     missing = pd.DataFrame.from_dict(to_nst_format({
-        "på": 'po:',
-        "efter": 'Ef$ter',
-        "av": 'A:v',
-        "som": 'sOm',
-        "den": 'dE:n',
-        "det": 'de:t',
+        "på": '"po:',
+        "efter": '"Ef$ter',
+        "av": '"A:v',
+        "som": '"sOm',
+        "den": '"dE:n',
+        "det": '"de:t',
         "2018": '"tvo: "t}:$sen ""A:$t`On',
-        "trump": 'tru0mp',
+        "trump": '"tru0mp',
         "2019": '"tvo: "t}:$sen ""nI$tOn',
         "shl": '"Es "ho: "El',
         "flera": '""fle:$ra',
@@ -114,7 +116,7 @@ def load_lexicon(path):
         "sd": '"Es "dE',
         "än": '"E:n',
         "sveriges": '"svEr$jes',
-        "trumps": 'tru0mp',
+        "trumps": 'tru0mps',
         "bort": '"bOt`',
         "mer": '"mEr',
         "löfven": 'l2:$"ve:n',
@@ -136,7 +138,8 @@ def load_lexicon(path):
         "v64": '"ve: sek$stI$U$""fy:$ra',
         "30": '""trE$tI',
         "4": '""fy:$ra',
-        "många": '""mON$a'
+        "många": '""mON$a',
+        "s": '?s'
     }), orient="index", columns=COLUMNS)
     df = pd.read_csv(
         path,
