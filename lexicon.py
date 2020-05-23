@@ -68,11 +68,13 @@ def get_syllables(lex, s):
 def count_syllables(lex, s):
     return len(get_syllables(lex, s))
 
+
 def is_unstressable(syl):
     return syl.startswith("?")
 
+
 def is_stressed_syllable(syl):
-    return syl.startswith('"') or syl.startswith("%") or syl.startswith('?')
+    return syl.startswith('"') or syl.startswith("%") or syl.startswith("?")
 
 
 def get_stressed_syllable_idx(syllables):
@@ -133,6 +135,7 @@ def is_rhyming_sentences(lex, s1, s2):
 
 ### PROSE
 
+
 def is_iambic_pentametre(lex, transcribed_sentence):
     syllables = get_syllables(lex, transcribed_sentence)
     if len(syllables) > 13 or len(syllables) < 6:
@@ -142,10 +145,14 @@ def is_iambic_pentametre(lex, transcribed_sentence):
         if last_was_stressed is None:
             last_was_stressed = is_stressed_syllable(syllable)
             continue
-        elif last_was_stressed and (is_unstressable(syllable) or not is_stressed_syllable(syllable)):
+        elif last_was_stressed and (
+            is_unstressable(syllable) or not is_stressed_syllable(syllable)
+        ):
             last_was_stressed = False
             continue
-        elif not last_was_stressed and (is_unstressable(syllable) or is_stressed_syllable(syllable)):
+        elif not last_was_stressed and (
+            is_unstressable(syllable) or is_stressed_syllable(syllable)
+        ):
             last_was_stressed = True
             continue
         else:

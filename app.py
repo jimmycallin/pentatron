@@ -7,17 +7,20 @@ from collections import Counter
 
 memory = Memory("/tmp/", verbose=1)
 
+
 @memory.cache
 def load_headlines():
     df = pd.read_json("./resources/headlines.json", lines=True)
     df["title"] = df._source.apply(lambda x: x["search"]["title"])
     return df["title"].tolist()
 
+
 def print_pairs(pair1, pair2):
     print(pair1[0])
     print(pair2[0])
     print(pair1[1])
     print(pair2[1])
+
 
 def headlines_rhyme(lex, headlines):
     missing_words = Counter()

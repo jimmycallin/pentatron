@@ -73,6 +73,7 @@ class _nst_dialect(csv.Dialect):
     lineterminator = "\r\n"
     quoting = csv.QUOTE_NONE
 
+
 def to_nst_format(transcriptions):
     nst_format = {}
     for orthography, transcription in transcriptions.items():
@@ -82,8 +83,10 @@ def to_nst_format(transcriptions):
         arr[11] = transcription
         nst_format[orthography] = arr
     return nst_format
-    
+
+
 # add these [('000', 386), ('v86', 302), ('gw', 291), ('volvo', 278), ('andreas', 263), ('martin', 261), ('18', 246), ('ibrahimovic', 229), ('13', 224), ('16', 222), ('17', 217), ('14', 206), ('avstängd', 200), ('malin', 194), ('bachner', 193), ('rånad', 186), ('brynäs', 185), ('25', 183), ('100', 181), ('19', 180), ('hemnet', 173), ('förd', 172), ('johaug', 169), ('misshandlad', 164), ('40', 160), ('21', 160), ('22', 158), ('häktad', 155), ('enligt', 151), ('facebook', 151), ('zlatans', 151), ('där', 149), ('dance', 145), ('meghan', 141), ('27', 141), ('ronaldo', 139), ('redhawks', 138), ('mourinho', 134), ('detta', 134), ('23', 132)]
+
 
 @memory.cache
 def load_lexicon(path):
@@ -91,56 +94,88 @@ def load_lexicon(path):
     Returns NST lexicon as pandas.DataFrame.
     """
     print("Reading NST lexicon from {}".format(path))
-    function_words = ["i", "att", "den", "det", "så", "och", "men", "för", "som", "då", "när", "min", "din", "vår", "han", "hon", "hans", "dess", "nog", "med", "kan", "hur", "var", "när", "vem"]
-    missing = pd.DataFrame.from_dict(to_nst_format({
-        "på": '"po:',
-        "efter": '"Ef$ter',
-        "av": '"A:v',
-        "som": '"sOm',
-        "den": '"dE:n',
-        "det": '"de:t',
-        "2018": '"tvo: "t}:$sen ""A:$t`On',
-        "trump": '"tru0mp',
-        "2019": '"tvo: "t}:$sen ""nI$tOn',
-        "shl": '"Es "ho: "El',
-        "flera": '""fle:$ra',
-        "2017": '"tvo: "t}:$sen ""xu0$tOn',
-        "10": '""ti:$U',
-        "få": '"fo:',
-        "5": '"fEm',
-        "1": '"Et',
-        "zlatan": '""fla:$tan',
-        "bra": '"brA:',
-        "7": '"x}:',
-        "utanför": '""}:$tan$%f2:r',
-        "sd": '"Es "dE',
-        "än": '"E:n',
-        "sveriges": '"svEr$jes',
-        "trumps": 'tru0mps',
-        "bort": '"bOt`',
-        "mer": '"mEr',
-        "löfven": 'l2:$"ve:n',
-        "stort": '"stu:t`',
-        "bakom": '""bA:%kOm',
-        "2": '"tvo:',
-        "6": '"sEks',
-        "hittad": '""hI$tad',
-        "kim": '"kIm',
-        "15": '""fEm$tOn',
-        "9": '""ni:$U',
-        "8": '""O$ta',
-        "20": '""s\'}:$gU',
-        "3": '"tre:',
-        "12": '"tOlv',
-        "topptipset": '"tOp "tIp$set',
-        "mest": '"mEst',
-        "11": '""El$va',
-        "v64": '"ve: sek$stI$U$""fy:$ra',
-        "30": '""trE$tI',
-        "4": '""fy:$ra',
-        "många": '""mON$a',
-        "s": '?s'
-    }), orient="index", columns=COLUMNS)
+    function_words = [
+        "i",
+        "att",
+        "den",
+        "det",
+        "så",
+        "och",
+        "men",
+        "för",
+        "som",
+        "då",
+        "när",
+        "min",
+        "din",
+        "vår",
+        "han",
+        "hon",
+        "hans",
+        "dess",
+        "nog",
+        "med",
+        "kan",
+        "hur",
+        "var",
+        "när",
+        "vem",
+    ]
+    missing = pd.DataFrame.from_dict(
+        to_nst_format(
+            {
+                "på": '"po:',
+                "efter": '"Ef$ter',
+                "av": '"A:v',
+                "som": '"sOm',
+                "den": '"dE:n',
+                "det": '"de:t',
+                "2018": '"tvo: "t}:$sen ""A:$t`On',
+                "trump": '"tru0mp',
+                "2019": '"tvo: "t}:$sen ""nI$tOn',
+                "shl": '"Es "ho: "El',
+                "flera": '""fle:$ra',
+                "2017": '"tvo: "t}:$sen ""xu0$tOn',
+                "10": '""ti:$U',
+                "få": '"fo:',
+                "5": '"fEm',
+                "1": '"Et',
+                "zlatan": '""fla:$tan',
+                "bra": '"brA:',
+                "7": '"x}:',
+                "utanför": '""}:$tan$%f2:r',
+                "sd": '"Es "dE',
+                "än": '"E:n',
+                "sveriges": '"svEr$jes',
+                "trumps": "tru0mps",
+                "bort": '"bOt`',
+                "mer": '"mEr',
+                "löfven": 'l2:$"ve:n',
+                "stort": '"stu:t`',
+                "bakom": '""bA:%kOm',
+                "2": '"tvo:',
+                "6": '"sEks',
+                "hittad": '""hI$tad',
+                "kim": '"kIm',
+                "15": '""fEm$tOn',
+                "9": '""ni:$U',
+                "8": '""O$ta',
+                "20": '""s\'}:$gU',
+                "3": '"tre:',
+                "12": '"tOlv',
+                "topptipset": '"tOp "tIp$set',
+                "mest": '"mEst',
+                "11": '""El$va',
+                "v64": '"ve: sek$stI$U$""fy:$ra',
+                "30": '""trE$tI',
+                "4": '""fy:$ra',
+                "många": '""mON$a',
+                "s": "?s",
+            }
+        ),
+        orient="index",
+        columns=COLUMNS,
+    )
     df = pd.read_csv(
         path,
         encoding="utf-8",
@@ -153,4 +188,10 @@ def load_lexicon(path):
     for fw in function_words:
         fw_trans1 = df.loc[df.orthography == fw, "trans_1"]
         df.loc[df.orthography == fw, "trans_1"] = "?{}".format(fw_trans1)
-    return df.append(missing, sort=True).drop_duplicates(subset="orthography").set_index("orthography").sort_index()
+    return (
+        df.append(missing, sort=True)
+        .drop_duplicates(subset="orthography")
+        .set_index("orthography")
+        .sort_index()
+    )
+

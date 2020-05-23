@@ -1,3 +1,6 @@
 {
-  "python.pythonPath": "/Users/jimmy/.local/share/virtualenvs/swentametron-VwkZMes9/bin/python"
+  "python.pythonPath": "/Users/jimmy.callin/Library/Caches/pypoetry/virtualenvs/swentametron-sFtyrFpA-py3.8/bin/python",
+  "python.linting.flake8Enabled": false,
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true
 }
