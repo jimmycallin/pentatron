@@ -85,7 +85,46 @@ def to_nst_format(transcriptions):
     return nst_format
 
 
-# add these [('000', 386), ('v86', 302), ('gw', 291), ('volvo', 278), ('andreas', 263), ('martin', 261), ('18', 246), ('ibrahimovic', 229), ('13', 224), ('16', 222), ('17', 217), ('14', 206), ('avstängd', 200), ('malin', 194), ('bachner', 193), ('rånad', 186), ('brynäs', 185), ('25', 183), ('100', 181), ('19', 180), ('hemnet', 173), ('förd', 172), ('johaug', 169), ('misshandlad', 164), ('40', 160), ('21', 160), ('22', 158), ('häktad', 155), ('enligt', 151), ('facebook', 151), ('zlatans', 151), ('där', 149), ('dance', 145), ('meghan', 141), ('27', 141), ('ronaldo', 139), ('redhawks', 138), ('mourinho', 134), ('detta', 134), ('23', 132)]
+# add these [('000', 386
+# 'v86', 302
+# 'gw', 291
+# 'volvo', 278
+# 'andreas', 263
+# 'martin', 261
+# '18', 246
+# 'ibrahimovic', 229
+# '13', 224
+# '16', 222
+# '17', 217
+# '14', 206
+# 'avstängd', 200
+# 'malin', 194
+# 'bachner', 193
+# 'rånad', 186
+# 'brynäs', 185
+# '25', 183
+# '100', 181
+# '19', 180
+# 'hemnet', 173
+# 'förd', 172
+# 'johaug', 169
+# 'misshandlad', 164
+# '40', 160
+# '21', 160
+# '22', 158
+# 'häktad', 155
+# 'enligt', 151
+# 'facebook', 151
+# 'zlatans', 151
+# 'där', 149
+# 'dance', 145
+# 'meghan', 141
+# '27', 141
+# 'ronaldo', 139
+# 'redhawks', 138
+# 'mourinho', 134
+# 'detta', 134
+# '23', 132)]
 
 
 @memory.cache
@@ -171,6 +210,51 @@ def load_lexicon(path):
                 "4": '""fy:$ra',
                 "många": '""mON$a',
                 "s": "?s",
+                "000": '"nOl "nOl "nOl',
+                "v86": '"ve: O$tI$U$"sEks',
+                "gw": '"ge:$ve',
+                "volvo": '"bOl$bu:',
+                "andreas": 'and$""re:$as',
+                "andreaa": 'and$""re:$a',
+                "martin": '"ma$t`In',
+                "18": '""A:$t`On',
+                "ibrahimovic": '""i:$bra$hIm$nO$vIts\'',
+                "13": '""trE$tOn',
+                "16": '""sEk$stOn',
+                "17": '""xu$tOn',
+                "14": '""fju:$t`On',
+                "avstängd": '""A:v$%stENd',
+                "malin": '"mA:$lIn',
+                "bachner": '"ba$kner',
+                "rånad": '""ro:$nad',
+                "lånad": '""lo:$nad',
+                "brynäs": '"by:$nE:s',
+                "25": 's\'}:$gU$"fEm',
+                "100": '"hu0n$dra',
+                "19": '""nI$tOn',
+                "hemnet": '"hEmn$et',
+                "förd": '"f2:d`',
+                "johaug": '""ju:$%hA:g',
+                "misshandlad": '""mI$s%hand$lad',
+                "40": '"f9$t`I$U',
+                "21": 's\'}:$gU$"Et',
+                "22": 's\'}:$gU$"tvo:',
+                "häktad": '""hEk$tad',
+                "jäktad": '""jEk$tad',
+                "enligt": '""e:$nlIkt',
+                "facebook": '"fEjs$bu:k',
+                "facebooks": '"fEjs$bu:ks',
+                "zlatans": '""fla:$tan',
+                "där": '"dE:r',
+                "dance": '"dE:ns',
+                "meghan": '""mE$gan',
+                "27": 's\'}:$gU$"x\\}:',
+                "ronaldo": 'ro$"nal$dU',
+                "redhawk": '"rEd$hA:k',
+                "redhawks": '"rEd$hA:ks',
+                "mourinho": 'mU$"ri:$nU',
+                "detta": '""dE$ta',
+                "23": 's\'}:$gU$"tre:',
             }
         ),
         orient="index",
@@ -194,4 +278,3 @@ def load_lexicon(path):
         .set_index("orthography")
         .sort_index()
     )
-

@@ -48,8 +48,9 @@ def headlines_rhyme(lex, headlines):
                 print()
                 pairs.append([title1, title2])
                 if len(pairs) == 2:
-                    print("PAIRS FOUND")
+                    print("-----PAIRS FOUND--------")
                     print_pairs(pairs[0], pairs[1])
+                    print()
                     pairs = []
                 break
     print("MISSING", str(missing_words.most_common(40)))
