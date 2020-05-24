@@ -51,6 +51,11 @@ def transcribe_word(lex, w):
     try:
         return lex.at[w, "trans_1"]
     except KeyError:
+        if w.endswith("s"):
+            try:
+                return lex.at[w[:-1], "trans_1"]
+            except KeyError:
+                return "UNK"
         return "UNK"
 
 
@@ -138,7 +143,7 @@ def is_rhyming_sentences(lex, s1, s2):
 
 def is_iambic_pentametre(lex, transcribed_sentence):
     syllables = get_syllables(lex, transcribed_sentence)
-    if len(syllables) > 13 or len(syllables) < 6:
+    if len(syllables) > 14 or len(syllables) < 6:
         return False
     last_was_stressed = None
     for syllable in syllables:

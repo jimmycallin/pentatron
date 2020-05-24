@@ -85,48 +85,6 @@ def to_nst_format(transcriptions):
     return nst_format
 
 
-# add these [('000', 386
-# 'v86', 302
-# 'gw', 291
-# 'volvo', 278
-# 'andreas', 263
-# 'martin', 261
-# '18', 246
-# 'ibrahimovic', 229
-# '13', 224
-# '16', 222
-# '17', 217
-# '14', 206
-# 'avstängd', 200
-# 'malin', 194
-# 'bachner', 193
-# 'rånad', 186
-# 'brynäs', 185
-# '25', 183
-# '100', 181
-# '19', 180
-# 'hemnet', 173
-# 'förd', 172
-# 'johaug', 169
-# 'misshandlad', 164
-# '40', 160
-# '21', 160
-# '22', 158
-# 'häktad', 155
-# 'enligt', 151
-# 'facebook', 151
-# 'zlatans', 151
-# 'där', 149
-# 'dance', 145
-# 'meghan', 141
-# '27', 141
-# 'ronaldo', 139
-# 'redhawks', 138
-# 'mourinho', 134
-# 'detta', 134
-# '23', 132)]
-
-
 @memory.cache
 def load_lexicon(path):
     """
@@ -159,6 +117,18 @@ def load_lexicon(path):
         "var",
         "när",
         "vem",
+        "en",
+        "ett",
+        "av",
+        "till",
+        "från",
+        "bland",
+        "längs",
+        "å",
+        "dels",
+        "då",
+        "fram",
+        "bak",
     ]
     missing = pd.DataFrame.from_dict(
         to_nst_format(
@@ -177,6 +147,7 @@ def load_lexicon(path):
                 "2017": '"tvo: "t}:$sen ""xu0$tOn',
                 "10": '""ti:$U',
                 "få": '"fo:',
+
                 "5": '"fEm',
                 "1": '"Et',
                 "zlatan": '""fla:$tan',
@@ -229,7 +200,7 @@ def load_lexicon(path):
                 "rånad": '""ro:$nad',
                 "lånad": '""lo:$nad',
                 "brynäs": '"by:$nE:s',
-                "25": 's\'}:$gU$"fEm',
+                "25": "s'}:$gU$\"fEm",
                 "100": '"hu0n$dra',
                 "19": '""nI$tOn',
                 "hemnet": '"hEmn$et',
@@ -237,8 +208,8 @@ def load_lexicon(path):
                 "johaug": '""ju:$%hA:g',
                 "misshandlad": '""mI$s%hand$lad',
                 "40": '"f9$t`I$U',
-                "21": 's\'}:$gU$"Et',
-                "22": 's\'}:$gU$"tvo:',
+                "21": "s'}:$gU$\"Et",
+                "22": "s'}:$gU$\"tvo:",
                 "häktad": '""hEk$tad',
                 "jäktad": '""jEk$tad',
                 "enligt": '""e:$nlIkt',
@@ -248,13 +219,53 @@ def load_lexicon(path):
                 "där": '"dE:r',
                 "dance": '"dE:ns',
                 "meghan": '""mE$gan',
-                "27": 's\'}:$gU$"x\\}:',
+                "27": "s'}:$gU$\"x\\}:",
                 "ronaldo": 'ro$"nal$dU',
                 "redhawk": '"rEd$hA:k',
                 "redhawks": '"rEd$hA:ks',
                 "mourinho": 'mU$"ri:$nU',
                 "detta": '""dE$ta',
-                "23": 's\'}:$gU$"tre:',
+                "23": "s'}:$gU$\"tre:",
+                "dömd": '"d9md',
+                "24": "s'}:$gU$\"fy:$ra",
+                "open": "u:$pen",
+                "melania": 'me"lA:$nI$a',
+                "26": "s'}:$gU$\"sEks",
+                "let": "lEt",
+                "lets": "lEts",
+                "71": 'x\\u0$tI$U$"Et',
+                "instagram": 'In$sta"gram',
+                "wilbacher": '"vIl$ba$ker',
+                "50": '"fEm$tI$U',
+                "minst": '"mInst',
+                "northug": '"nu:r%t}:g',
+                "neymar": '"nEj$mar',
+                "cristiano": '"krI$stI$A:$nU',
+                "jong": '"jON',
+                "28": 's\'}:$gU$""O$ta',
+                "talar": '""tA:$lar',
+                "drabbad": '""dra$bad',
+                "extra": '"Ek$stra',
+                "postnord": '"pOst%nu:d',
+                "29": 's\'}:$gU$""ni:$U',
+                "ingrosso": 'iN"grO$sU',
+                "psg": '"pe:%Es%e:',
+                "akilov": 'a"kI$"lo:v',
+                "juventus": 'j}:$""vEn$tu0s',
+                "varje": '"var$je',
+                "netflix": '"nEt$flIks',
+                "tesla": '"tE$sla',
+                "0": '"n0l',
+                "otäcka": '""u:$%tE$ka',
+                "storbråk": '"stu:r%bro:k',
+                "31": 'tre$tI$U$"Et',
+                "batra": '"bA:$tra',
+                "60": '"sEk$stI$U',
+                "ifrån": '"I$fro:n',
+                "kate": '"kA:$te',
+                "mördad": '""m2:$d`ad',
+                "metoo": '"mi:%to:',
+                "lindgren": '"lInd%gre:n',
             }
         ),
         orient="index",

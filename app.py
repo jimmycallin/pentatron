@@ -11,7 +11,7 @@ memory = Memory("/tmp/", verbose=1)
 @memory.cache
 def load_headlines():
     df = pd.read_json("./resources/headlines.json", lines=True)
-    df["title"] = df._source.apply(lambda x: x["search"]["title"])
+    df["title"] = df._source.apply(lambda x: x["search"]["title"].replace("\n", " "))
     return df["title"].tolist()
 
 
