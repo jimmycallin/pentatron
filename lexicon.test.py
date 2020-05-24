@@ -9,3 +9,7 @@ def assert_rhymes():
         ("elefant", "konsonant"),
     ]
     shouldnt_rhyme = [("fiskare", "slaktare"), ("säng", "bassäng")]
+
+
+
+# this should be  a pentameter Läkare slängde journaler på Lidl

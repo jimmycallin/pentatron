@@ -115,7 +115,6 @@ def load_lexicon(path):
         "kan",
         "hur",
         "var",
-        "när",
         "vem",
         "en",
         "ett",
@@ -144,7 +143,7 @@ def load_lexicon(path):
                 "2019": '"tvo: "t}:$sen ""nI$tOn',
                 "shl": '"Es "ho: "El',
                 "flera": '""fle:$ra',
-                "2017": '"tvo: "t}:$sen ""xu0$tOn',
+                "2017": '"tvo:%t}:$sen%x\\u0$tOn',
                 "10": '""ti:$U',
                 "få": '"fo:',
 
@@ -180,7 +179,6 @@ def load_lexicon(path):
                 "30": '""trE$tI',
                 "4": '""fy:$ra',
                 "många": '""mON$a',
-                "s": "?s",
                 "000": '"nOl "nOl "nOl',
                 "v86": '"ve: O$tI$U$"sEks',
                 "gw": '"ge:$ve',
@@ -192,7 +190,7 @@ def load_lexicon(path):
                 "ibrahimovic": '""i:$bra$hIm$nO$vIts\'',
                 "13": '""trE$tOn',
                 "16": '""sEk$stOn',
-                "17": '""xu$tOn',
+                "17": '""x\\u0$tOn',
                 "14": '""fju:$t`On',
                 "avstängd": '""A:v$%stENd',
                 "malin": '"mA:$lIn',
@@ -228,13 +226,13 @@ def load_lexicon(path):
                 "23": "s'}:$gU$\"tre:",
                 "dömd": '"d9md',
                 "24": "s'}:$gU$\"fy:$ra",
-                "open": "u:$pen",
-                "melania": 'me"lA:$nI$a',
+                "open": '"u:$pen',
+                "melania": 'me$"lA:$nI$a',
                 "26": "s'}:$gU$\"sEks",
                 "let": "lEt",
                 "lets": "lEts",
                 "71": 'x\\u0$tI$U$"Et',
-                "instagram": 'In$sta"gram',
+                "instagram": 'In$sta$"gram',
                 "wilbacher": '"vIl$ba$ker',
                 "50": '"fEm$tI$U',
                 "minst": '"mInst',
@@ -248,14 +246,14 @@ def load_lexicon(path):
                 "extra": '"Ek$stra',
                 "postnord": '"pOst%nu:d',
                 "29": 's\'}:$gU$""ni:$U',
-                "ingrosso": 'iN"grO$sU',
+                "ingrosso": 'iN$"grO$sU',
                 "psg": '"pe:%Es%e:',
                 "akilov": 'a"kI$"lo:v',
                 "juventus": 'j}:$""vEn$tu0s',
                 "varje": '"var$je',
                 "netflix": '"nEt$flIks',
                 "tesla": '"tE$sla',
-                "0": '"n0l',
+                "0": '"nOl',
                 "otäcka": '""u:$%tE$ka',
                 "storbråk": '"stu:r%bro:k',
                 "31": 'tre$tI$U$"Et',
@@ -264,8 +262,10 @@ def load_lexicon(path):
                 "ifrån": '"I$fro:n',
                 "kate": '"kA:$te',
                 "mördad": '""m2:$d`ad',
-                "metoo": '"mi:%to:',
+                "metoo": '"mi:%tu:',
                 "lindgren": '"lInd%gre:n',
+                "när": '"nE:r',
+                "sek": '"sEk'
             }
         ),
         orient="index",
@@ -285,7 +285,7 @@ def load_lexicon(path):
         df.loc[df.orthography == fw, "trans_1"] = "?{}".format(fw_trans1)
     return (
         df.append(missing, sort=True)
-        .drop_duplicates(subset="orthography")
+        .drop_duplicates(subset="orthography", keep="last")
         .set_index("orthography")
         .sort_index()
     )
