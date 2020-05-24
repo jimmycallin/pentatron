@@ -47,16 +47,37 @@ def tokenize(s):
 ### TRANSCRIPTION
 
 
+def try_resolve_missing_word_transcription(lex, w):
+    # can I find the same word without trailing r?
+    if w.endswith("r"):
+        try:
+            return lex.at[w[:-1], "trans_1"] + "r"
+        except KeyError:
+            pass
+
+    # can I find the same word without trailing d?
+    if w.endswith("d"):
+        try:
+            return lex.at[w[:-1], "trans_1"] + "d"
+        except KeyError:
+            pass
+
+
+    # can I find the same word without trailing s?
+    if w.endswith("s"):
+        try:
+            return lex.at[w[:-1], "trans_1"] + "s"
+        except KeyError:
+            pass
+
+    return "UNK"
+
+
 def transcribe_word(lex, w):
     try:
         return lex.at[w, "trans_1"]
     except KeyError:
-        if w.endswith("s"):
-            try:
-                return lex.at[w[:-1], "trans_1"]
-            except KeyError:
-                return "UNK"
-        return "UNK"
+        return try_resolve_missing_word_transcription(lex, w)
 
 
 def transcribe_sentence(lex, s):
