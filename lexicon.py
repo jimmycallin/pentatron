@@ -1,6 +1,11 @@
 import re
-from typing import List, Mapping
+from typing import List, Mapping, NewType, cast
 from resources import nst
+
+Word = str
+Syllable = NewType("Syllable", str)
+Sentence = List[Word]
+Transcription = List[Syllable]
 
 DIPHTONGS = ["a*U", "E*U"]
 
@@ -40,7 +45,7 @@ CONSONANTS = STOPS + NASALS + FRICATIVES + APPROX
 SYLLABLE_SEPARATOR = "$"
 
 
-def tokenize(s: str) -> List[str]:
+def tokenize(s: str) -> Sentence:
     return re.findall(r"[\w\d']+", s.replace("\\n", "").replace("'", "").lower())
 
 
@@ -72,42 +77,40 @@ def try_resolve_missing_word_transcription(lex, w: str) -> str:
     return "UNK"
 
 
-def transcribe_word(lex, w: str) -> str:
+def transcribe_word(lex, w: Word) -> str:
     try:
         return lex.at[w, "trans_1"]
     except KeyError:
         return try_resolve_missing_word_transcription(lex, w)
 
 
-def transcribe_sentence(lex, s: str) -> str:
-    return " ".join([transcribe_word(lex, w) for w in tokenize(s)])
+# def transcribe_sentence(lex, s: Sentence) -> List[Syllable]:
+#     return " ".join([transcribe_word(lex, w) for w in tokenize(s)])
 
 
 ### SYLLABLE
 
-
-def get_syllables(lex, s: str) -> List[str]:
-    return re.split(r"[\s$]", transcribe_sentence(lex, s))
+flatten = lambda l: [item for sublist in l for item in sublist]
 
 
-def count_syllables(lex, s: str) -> int:
-    return len(get_syllables(lex, s))
+def get_syllables(lex, w: Word) -> Transcription:
+    return cast(List[Syllable], re.split(r"[\s$]", transcribe_word(lex, w)))
 
 
-def is_unstressable(syl: str) -> bool:
+def is_unstressable(syl: Syllable) -> bool:
     return syl.startswith("?")
 
 
-def is_stressed_syllable(syl: str) -> bool:
+def is_stressed_syllable(syl: Syllable) -> bool:
     return syl.startswith('"') or syl.startswith("%") or syl.startswith("?")
 
 
-def get_stressed_syllable_idx(syllables: List[str]) -> int:
+def get_stressed_syllable_idx(syllables: List[Syllable]) -> int:
     print("get_stresed_syllables_idx", syllables)
     return [i for i, syl in enumerate(syllables) if is_stressed_syllable(syl)][-1]
 
 
-def get_nucleus(syl: str) -> str:
+def get_nucleus(syl: Syllable) -> str:
     # longest matching vowel / diphtong?
     matches = []
     for v in VOWELS:
@@ -118,19 +121,19 @@ def get_nucleus(syl: str) -> str:
     return max([[i, x] for i, x in enumerate(matches)], key=lambda x: len(x[1]))[1]
 
 
-def get_onset(syl: str) -> str:
+def get_onset(syl: Syllable) -> str:
     # all consonants up to nucleus
     nucleus = get_nucleus(syl)
     return syl[: syl.find(nucleus)]
 
 
-def get_coda(syl: str) -> str:
+def get_coda(syl: Syllable) -> str:
     # everything after nucleus
     nucleus = get_nucleus(syl)
     return syl[syl.find(nucleus) + len(nucleus) :]
 
 
-def get_rime(syl: str) -> str:
+def get_rime(syl: Syllable) -> str:
     return get_nucleus(syl) + get_coda(syl)
 
 
@@ -150,37 +153,38 @@ def get_rhyme_component_from_sentence(lex, s: str) -> str:
         return "UNK"
     stress = syllables[get_stressed_syllable_idx(syllables) :]
     rime = get_rime(stress[0])
-    return "".join([rime] + stress[1:])
+    return "".join([rime] + cast(List[str], stress[1:]))
 
 
-def is_rhyme(lex, w1, w2):
-    w1_syl = get_syllables(lex, w1)
-    w2_syl = get_syllables(lex, w2)
-    if w1_syl[0] == "UNK" or w2_syl[0] == "UNK":
-        return False
-    w1_stress = w1_syl[get_stressed_syllable_idx(w1_syl) :]
-    w2_stress = w2_syl[get_stressed_syllable_idx(w2_syl) :]
-    if "".join(w1_stress).lstrip('"').lstrip("%") == "".join(w2_stress).lstrip(
-        '"'
-    ).lstrip("%"):
-        return False
-    return [get_rime(w1_stress[0])] + w1_stress[1:] == [
-        get_rime(w2_stress[0])
-    ] + w2_stress[1:]
+# def is_rhyme(lex, w1, w2):
+#     w1_syl = get_syllables(lex, w1)
+#     w2_syl = get_syllables(lex, w2)
+#     if w1_syl[0] == "UNK" or w2_syl[0] == "UNK":
+#         return False
+#     w1_stress = w1_syl[get_stressed_syllable_idx(w1_syl) :]
+#     w2_stress = w2_syl[get_stressed_syllable_idx(w2_syl) :]
+#     if "".join(w1_stress).lstrip('"').lstrip("%") == "".join(w2_stress).lstrip(
+#         '"'
+#     ).lstrip("%"):
+#         return False
+#     return [get_rime(w1_stress[0])] + w1_stress[1:] == [
+#         get_rime(w2_stress[0])
+#     ] + w2_stress[1:]
 
 
-def is_rhyming_sentences(lex, s1, s2):
-    ws1 = tokenize(s1)
-    ws2 = tokenize(s2)
-    if is_rhyme(lex, ws1[-1], ws2[-1]):
-        return True
+# def is_rhyming_sentences(lex, s1, s2):
+#     ws1 = tokenize(s1)
+#     ws2 = tokenize(s2)
+#     if is_rhyme(lex, ws1[-1], ws2[-1]):
+#         return True
 
 
 ### PROSE
 
 
-def is_iambic_pentametre(lex, transcribed_sentence):
-    syllables = get_syllables(lex, transcribed_sentence)
+def is_iambic_pentametre(lex, sentence: str):
+    tokens = tokenize(sentence)
+    syllables = flatten([get_syllables(lex, w) for w in tokens])
     if len(syllables) > 14 or len(syllables) < 6:
         return False
     last_was_stressed = None
