@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "swentametron"
+name = "pentatron"
 version = "0.1.0"
 description = ""
 authors = ["jimmy.callin <jimmy.callin@gmail.com>"]
