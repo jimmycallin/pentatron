@@ -84,10 +84,6 @@ def transcribe_word(lex, w: Word) -> str:
         return try_resolve_missing_word_transcription(lex, w)
 
 
-# def transcribe_sentence(lex, s: Sentence) -> List[Syllable]:
-#     return " ".join([transcribe_word(lex, w) for w in tokenize(s)])
-
-
 ### SYLLABLE
 
 flatten = lambda l: [item for sublist in l for item in sublist]
@@ -154,29 +150,6 @@ def get_rhyme_component_from_sentence(lex, s: str) -> str:
     stress = syllables[get_stressed_syllable_idx(syllables) :]
     rime = get_rime(stress[0])
     return "".join([rime] + cast(List[str], stress[1:]))
-
-
-# def is_rhyme(lex, w1, w2):
-#     w1_syl = get_syllables(lex, w1)
-#     w2_syl = get_syllables(lex, w2)
-#     if w1_syl[0] == "UNK" or w2_syl[0] == "UNK":
-#         return False
-#     w1_stress = w1_syl[get_stressed_syllable_idx(w1_syl) :]
-#     w2_stress = w2_syl[get_stressed_syllable_idx(w2_syl) :]
-#     if "".join(w1_stress).lstrip('"').lstrip("%") == "".join(w2_stress).lstrip(
-#         '"'
-#     ).lstrip("%"):
-#         return False
-#     return [get_rime(w1_stress[0])] + w1_stress[1:] == [
-#         get_rime(w2_stress[0])
-#     ] + w2_stress[1:]
-
-
-# def is_rhyming_sentences(lex, s1, s2):
-#     ws1 = tokenize(s1)
-#     ws2 = tokenize(s2)
-#     if is_rhyme(lex, ws1[-1], ws2[-1]):
-#         return True
 
 
 ### PROSE
